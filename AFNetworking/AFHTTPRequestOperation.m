@@ -134,7 +134,11 @@ static dispatch_group_t http_request_operation_completion_group() {
                 } else {
                     if (success) {
                         dispatch_group_async(self.completionGroup ?: http_request_operation_completion_group(), self.completionQueue ?: dispatch_get_main_queue(), ^{
-                            success(self, responseObject);
+                            if(responseObject != nil ) { // prevents crash
+                                success(self, responseObject);
+                            } else {
+                                success(self, @"");
+                            }
                         });
                     }
                 }
